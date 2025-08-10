@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>Formation Management System</title>
+    <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>🎓</text></svg>">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css" rel="stylesheet">
+
+    <style>
+        :root{
+          --primary:#3b82f6;--primary-dark:#2563eb;--success:#22c55e;--danger:#ef4444;--warning:#f59e0b;
+          --text:#0f172a;--muted:#64748b;--bg:#f8fafc;--card:#ffffff;--border:#e2e8f0;
+          --radius:14px;--shadow:0 8px 20px rgba(2,6,23,.08)
+        }
+        *{box-sizing:border-box;margin:0;padding:0}
+        body{font-family:Inter,system-ui,-apple-system,Segoe UI,Roboto,Arial,sans-serif;background:var(--bg);color:var(--text)}
+        a{color:inherit;text-decoration:none}
+        .container{max-width:1200px;margin:0 auto;padding:24px}
+        header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--border);z-index:50}
+        header .inner{max-width:1200px;margin:0 auto;display:flex;align-items:center;gap:16px;justify-content:space-between;padding:14px 24px}
+        .brand{display:flex;align-items:center;gap:10px;font-weight:700;color:var(--primary)}
+        .brand i{font-size:22px}
+        nav ul{display:flex;gap:14px;list-style:none}
+        nav a{padding:8px 12px;border-radius:10px;color:#334155}
+        nav a:hover{background:#f1f5f9}
+        .status{display:flex;align-items:center;gap:8px;padding:6px 12px;border-radius:999px;background:#eef2ff}
+        .dot{width:8px;height:8px;border-radius:50%;background:var(--success);animation:pulse 1.6s infinite}
+        @keyframes pulse{0%{opacity:1}50%{opacity:.5}100%{opacity:1}}
+        .hero{background:linear-gradient(135deg,#6366f1,#22d3ee);color:#fff;padding:56px 24px}
+        .hero .wrap{max-width:1200px;margin:0 auto;text-align:center}
+        .hero h1{font-size:40px;line-height:1.1;margin-bottom:10px}
+        .hero p{opacity:.95;font-size:18px}
+        .grid{display:grid;gap:18px}
+        @media(min-width:900px){.grid-2{grid-template-columns:1fr 1fr}}
+        .card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow)}
+        .card-header{display:flex;align-items:center;justify-content:space-between;padding:18px 20px;border-bottom:1px solid var(--border)}
+        .card-title{display:flex;align-items:center;gap:10px;font-weight:700}
+        .card-body{padding:20px}
+        .btn{display:inline-flex;align-items:center;gap:8px;border:0;border-radius:10px;padding:10px 14px;font-weight:600;cursor:pointer;transition:transform .05s ease}
+        .btn:active{transform:translateY(1px)}
+        .btn-primary{background:var(--primary);color:#fff}
+        .btn-primary:hover{background:var(--primary-dark)}
+        .btn-ghost{background:#f1f5f9}
+        .btn-danger{background:var(--danger);color:#fff}
+        .btn-success{background:var(--success);color:#fff}
+        .btn-sm{padding:7px 10px;font-size:13px;border-radius:8px}
+        .row{display:flex;gap:10px;flex-wrap:wrap}
+        .muted{color:var(--muted)}
+        .list{display:grid;gap:14px}
+        /* formation card */
+        .formation{border:1px solid var(--border);border-radius:12px;padding:16px;display:grid;gap:10px;background:#fff}
+        .formation .meta{display:flex;gap:14px;flex-wrap:wrap;color:var(--muted);font-size:13px}
+        .chip{font-size:12px;padding:4px 8px;border-radius:999px;background:#eef2ff;color:#3730a3;font-weight:700}
+        /* plugin card */
+        .plugin{display:flex;align-items:center;gap:14px;border:1px solid var(--border);border-radius:12px;padding:14px;background:#fff}
+        .plugin .icon{width:46px;height:46px;border-radius:10px;display:grid;place-items:center;background:#eef2ff;color:#4338ca;font-size:18px}
+        .badge{font-size:12px;padding:4px 8px;border-radius:999px;color:#fff;font-weight:700}
+        .badge.STARTED{background:var(--success)}
+        .badge.STOPPED{background:var(--danger)}
+        .badge.LOADED{background:#64748b}
+        .empty{padding:28px;text-align:center;color:var(--muted)}
+        .loading{display:flex;gap:10px;align-items:center;color:var(--muted)}
+        .spinner{width:18px;height:18px;border-radius:50%;border:3px solid #e2e8f0;border-top-color:var(--primary);animation:spin 1s linear infinite}
+        @keyframes spin{to{transform:rotate(360deg)}}
+        /* modal */
+        .modal{position:fixed;inset:0;background:rgba(15,23,42,.35);display:none;align-items:center;justify-content:center;padding:18px;z-index:100}
+        .modal.active{display:flex}
+        .modal .panel{background:#fff;border-radius:14px;width:100%;max-width:520px;border:1px solid var(--border);box-shadow:var(--shadow)}
+        .panel-header{display:flex;align-items:center;justify-content:space-between;padding:16px 18px;border-bottom:1px solid var(--border)}
+        .panel-body{padding:18px}
+        .field{display:grid;gap:8px;margin-bottom:14px}
+        .input,textarea{border:1px solid var(--border);padding:10px 12px;border-radius:10px;font:inherit}
+        textarea{min-height:100px;resize:vertical}
+        .toast{position:fixed;top:20px;right:20px;background:#111827;color:#fff;padding:12px 16px;border-radius:10px;box-shadow:var(--shadow);opacity:0;transform:translateY(-8px);transition:.2s;z-index:110}
+        .toast.show{opacity:1;transform:none}
+    </style>
+</head>
+<body>
+
+<header>
+    <div class="inner">
+        <a class="brand" href="#"><i class="fa-solid fa-graduation-cap"></i>Formation Management System</a>
+        <nav>
+            <ul>
+                <li><a href="#formations">Formations</a></li>
+                <li><a href="#plugins">Plugins</a></li>
+                <li><a href="/formation/h2-console" target="_blank">Base H2</a></li>
+                <li><a href="/formation/api/formations" target="_blank">API</a></li>
+            </ul>
+        </nav>
+        <div class="status"><span class="dot" id="dot"></span><span id="apiState">API Connected</span></div>
+    </div>
+</header>
+
+<section class="hero">
+    <div class="wrap">
+        <h1>Gérez vos formations & plugins</h1>
+        <p>Architecture extensible : ajoutez des fonctionnalités (modules, quiz, certificats) sans toucher au cœur.</p>
+    </div>
+</section>
+
+<main class="container">
+    <div class="grid grid-2" id="sections">
+        <!-- Formations -->
+        <section id="formations" class="card">
+            <div class="card-header">
+                <div class="card-title"><i class="fa-solid fa-book"></i> Formations</div>
+                <div class="row">
+                    <button class="btn btn-ghost" id="refreshFormations"><i class="fa-solid fa-rotate"></i> Actualiser</button>
+                    <button class="btn btn-primary" id="newFormation"><i class="fa-solid fa-plus"></i> Nouvelle formation</button>
+                </div>
+            </div>
+            <div class="card-body">
+                <div id="formations-container" class="list">
+                    <div class="loading"><span class="spinner"></span> Chargement des formations...</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Plugins -->
+        <section id="plugins" class="card">
+            <div class="card-header">
+                <div class="card-title"><i class="fa-solid fa-puzzle-piece"></i> Plugins Système</div>
+                <button class="btn btn-ghost" id="refreshPlugins"><i class="fa-solid fa-rotate"></i> Actualiser</button>
+            </div>
+            <div class="card-body">
+                <div id="plugins-container" class="list">
+                    <div class="loading"><span class="spinner"></span> Chargement des plugins...</div>
+                </div>
+            </div>
+        </section>
+    </div>
+</main>
+
+<!-- Modal création -->
+<div class="modal" id="modal">
+    <div class="panel">
+        <div class="panel-header">
+            <strong>Créer une formation</strong>
+            <button class="btn btn-ghost btn-sm" id="closeModal"><i class="fa-solid fa-xmark"></i></button>
+        </div>
+        <div class="panel-body">
+            <form id="formCreate">
+                <div class="field">
+                    <label for="fTitle">Titre</label>
+                    <input class="input" id="fTitle" name="title" required placeholder="Ex: Introduction à Java">
+                </div>
+                <div class="field">
+                    <label for="fDesc">Description</label>
+                    <textarea id="fDesc" name="description" required placeholder="Objectifs, contenu, public cible..."></textarea>
+                </div>
+                <div class="row" style="justify-content:flex-end">
+                    <button type="button" class="btn btn-ghost" id="cancelCreate">Annuler</button>
+                    <button type="submit" class="btn btn-primary"><i class="fa-solid fa-floppy-disk"></i> Créer</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+    // ---------- CONFIG ----------
+    const API_BASE = '/formation/api'; // adapte si besoin
+    const el = (id)=>document.getElementById(id);
+
+    // ---------- HELPERS ----------
+    const showToast=(msg)=>{const t=el('toast');t.textContent=msg;t.classList.add('show');setTimeout(()=>t.classList.remove('show'),2200);}
+    const setApiState=(ok)=>{el('apiState').textContent = ok?'API Connected':'API Disconnected';el('dot').style.background = ok?'var(--success)':'var(--danger)';}
+
+    async function api(path, options={}){
+      try{
+        const res = await fetch(API_BASE+path,{headers:{'Content-Type':'application/json','Accept':'application/json'},...options});
+        setApiState(res.ok);
+        if(!res.ok){const text=await res.text();throw new Error(text||('HTTP '+res.status))}
+        const ct=res.headers.get('content-type')||'';
+        return ct.includes('application/json')?res.json():null;
+      }catch(e){setApiState(false);throw e;}
+    }
+
+    // ---------- FORMATIONS ----------
+    async function loadFormations(){
+      const c = el('formations-container');
+      c.innerHTML = `<div class="loading"><span class="spinner"></span> Chargement des formations...</div>`;
+      try{
+        const list = await api('/formations');
+        if(!list || list.length===0){
+          c.innerHTML = `<div class="empty"><i class="fa-regular fa-face-smile"></i><br/>Aucune formation. Créez-en une !</div>`;
+          return;
+        }
+        c.innerHTML = list.map(f=>renderFormation(f)).join('');
+      }catch(e){
+        c.innerHTML = `<div class="empty">Erreur de chargement des formations.</div>`;
+      }
+    }
+
+    function renderFormation(f){
+      const participants = (f.participants && f.participants.length)||0;
+      const status = f.status || 'DRAFT';
+      const desc = (f.description||'').trim()||'Aucune description';
+      return `
+        <div class="formation">
+          <div style="display:flex;align-items:center;justify-content:space-between;gap:10px">
+            <strong>${escapeHtml(f.title||'Sans titre')}</strong>
+            <span class="chip">${status}</span>
+          </div>
+          <div class="muted">${escapeHtml(desc)}</div>
+          <div class="meta">
+            <div><i class="fa-regular fa-id-badge"></i> <code>${f.id||'-'}</code></div>
+            <div><i class="fa-solid fa-users"></i> ${participants} participants</div>
+          </div>
+          <div class="row" style="justify-content:flex-end">
+            ${status!=='COMPLETED' ? `<button class="btn btn-success btn-sm" onclick="completeFormation('${f.id}')"><i class="fa-solid fa-check"></i> Terminer</button>` : ''}
+            <button class="btn btn-danger btn-sm" onclick="deleteFormation('${f.id}')"><i class="fa-solid fa-trash"></i> Supprimer</button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function createFormation(payload){
+      await api('/formations',{method:'POST',body:JSON.stringify(payload)});
+      showToast('Formation créée');
+      await loadFormations();
+    }
+    async function deleteFormation(id){
+      if(!confirm('Supprimer cette formation ?')) return;
+      await api(`/formations/${encodeURIComponent(id)}`,{method:'DELETE'});
+      showToast('Formation supprimée');
+      await loadFormations();
+    }
+    async function completeFormation(id){
+      const res = await api(`/formations/${encodeURIComponent(id)}/complete`,{method:'POST'});
+      showToast('Formation terminée');
+      await loadFormations();
+    }
+
+    // ---------- PLUGINS ----------
+    async function loadPlugins(){
+      const c = el('plugins-container');
+      c.innerHTML = `<div class="loading"><span class="spinner"></span> Chargement des plugins...</div>`;
+      try{
+        const list = await api('/plugins');
+        if(!list || list.length===0){
+          c.innerHTML = `<div class="empty">Aucun plugin détecté.</div>`;
+          return;
+        }
+        c.innerHTML = list.map(p=>renderPlugin(p)).join('');
+      }catch(e){
+        c.innerHTML = `<div class="empty">Erreur de chargement des plugins.</div>`;
+      }
+    }
+
+    function renderPlugin(p){
+      const name = escapeHtml(p.name);
+      const version = escapeHtml(p.version);
+      const icon = escapeHtml(p.icon || 'fa-solid fa-puzzle-piece');
+      const status = escapeHtml(p.status || 'LOADED');
+      const started = status === 'STARTED';
+      return `
+        <div class="plugin">
+          <div class="icon"><i class="${icon}"></i></div>
+          <div style="flex:1">
+            <div style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+              <strong>${name}</strong>
+              <span class="badge ${status}">${status}</span>
+            </div>
+            <div class="muted">v${version}</div>
+          </div>
+          <div class="row">
+            <button class="btn btn-sm ${started?'btn-ghost':'btn-success'}" onclick="startPlugin('${encodeURIComponent(name)}')" ${started?'disabled':''}>
+              <i class="fa-solid fa-play"></i> Start
+            </button>
+            <button class="btn btn-sm ${started?'btn-danger':'btn-ghost'}" onclick="stopPlugin('${encodeURIComponent(name)}')" ${started?'':'disabled'}>
+              <i class="fa-solid fa-stop"></i> Stop
+            </button>
+          </div>
+        </div>
+      `;
+    }
+
+    async function startPlugin(nameEnc){
+      await api(`/plugins/${nameEnc}/start`,{method:'POST'});
+      showToast('Plugin démarré');
+      await loadPlugins();
+    }
+    async function stopPlugin(nameEnc){
+      await api(`/plugins/${nameEnc}/stop`,{method:'POST'});
+      showToast('Plugin arrêté');
+      await loadPlugins();
+    }
+
+    // ---------- UTIL ----------
+    function escapeHtml(str){const div=document.createElement('div');div.textContent=String(str??'');return div.innerHTML;}
+
+    // ---------- UI EVENTS ----------
+    el('newFormation').addEventListener('click',()=>{ openModal(); });
+    el('refreshFormations').addEventListener('click',loadFormations);
+    el('refreshPlugins').addEventListener('click',loadPlugins);
+
+    // modal events
+    function openModal(){el('modal').classList.add('active');setTimeout(()=>el('fTitle').focus(),50)}
+    function closeModal(){el('modal').classList.remove('active')}
+    el('closeModal').addEventListener('click',closeModal);
+    el('cancelCreate').addEventListener('click',closeModal);
+    el('formCreate').addEventListener('submit',async (e)=>{
+      e.preventDefault();
+      const title = el('fTitle').value.trim();
+      const description = el('fDesc').value.trim();
+      if(!title || !description){showToast('Veuillez remplir les champs');return;}
+      try{ await createFormation({ title, description }); closeModal(); el('formCreate').reset(); }
+      catch{ showToast('Erreur création'); }
+    });
+
+    // Auto refresh
+    setInterval(()=>{ if(document.visibilityState==='visible'){ loadFormations(); loadPlugins(); } }, 30000);
+
+    // ---------- BOOT ----------
+    (async function init(){
+      await Promise.all([loadFormations(), loadPlugins()]);
+    })();
+</script>
+</body>
+</html>

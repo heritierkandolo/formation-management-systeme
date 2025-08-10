@@ -1,0 +1,5 @@
+spring:
+  application:
+    name: interfacecli
+server:
+  port: 8080
