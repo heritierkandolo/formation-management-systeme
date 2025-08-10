@@ -1,8 +1,8 @@
-# 🎓 Formation Management System
+# Formation Management System
 
 ## Architecture Plugin-based
 
-### 🚀 Démarrage Rapide
+### Démarrage Rapide
 
 ```batch
 REM 1. Build
@@ -12,15 +12,16 @@ REM 2. Run
 run.bat
 ```
 
-### 🌐 Accès
+### Accès
 - **CLI**: Console interactive
-- **REST**: http://localhost:8080/formation/api/formations
-- **H2 DB**: http://localhost:8080/formation/h2-console
+- **GUI**: Formation Management System | http://localhost:8080/formation/
+- **REST**: API | http://localhost:8080/formation/api/formations
+- **H2 DB**: Console H2 DB | http://localhost:8080/formation/h2-console
 
-### 🔌 Plugins Inclus
+### Plugins Inclus
 - Module Management Plugin
 - Quiz Plugin  
 - Certificate Plugin
 
 ---
-**Généré automatiquement avec le script d'automatisation**
+**Edit By Héritier KANDOLO**
