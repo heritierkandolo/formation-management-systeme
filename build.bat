@@ -1,13 +1,11 @@
 @echo off
-echo 🔨 Building Formation Management System...
-call mvn clean install -DskipTests
+echo Building Formation Management System...
+call mvn -pl core clean package spring-boot:repackage
 if %errorlevel% equ 0 (
-    echo ✅ Build completed successfully
+    echo  Build completed successfully
     echo.
-    echo 🚀 To run: run.bat
-    echo 🌐 REST API: http://localhost:8080/formation/api/formations
-    echo 🌐 H2 Console: http://localhost:8080/formation/h2-console
+    echo To run: run.bat
 ) else (
-    echo ❌ Build failed
+    echo Build failed
 )
 pause
