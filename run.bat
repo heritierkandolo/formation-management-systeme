@@ -1,5 +1,5 @@
 @echo off
-echo 🚀 Starting Formation Management System...
+echo Starting Formation Management System...
 cd core
-call mvn spring-boot:run
+call java -jar core/target/core-1.0.0.jar
 pause
